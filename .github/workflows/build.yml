@@ -18,11 +18,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Show the toolchain in the image
+        run: |
+          echo "DEVKITPRO=$DEVKITPRO DEVKITPPC=$DEVKITPPC"
+          ls /opt/devkitpro || true
+          ls /opt/devkitpro/portlibs/ppc/lib 2>/dev/null | head -20 || echo "no ppc portlibs"
+          ls /opt/devkitpro/libogc/lib/wii 2>/dev/null | head || echo "no libogc"
+          /opt/devkitpro/pacman/bin/pacman -Q 2>/dev/null | grep -E 'libogc|freetype|libpng|brotli|bzip2|zlib' || true
+
       - name: Install devkitPro packages
         run: |
+          # pkg.devkitpro.org currently answers 403 to the runners' package DB
+          # request, so try the cache first and carry on if the image already
+          # has everything the build needs.
           /opt/devkitpro/pacman/bin/pacman -Sy --noconfirm --needed \
             libogc libfat-ogc ppc-freetype ppc-libpng ppc-brotli ppc-bzip2 \
-            ppc-libjpeg-turbo ppc-zlib zip
+            ppc-libjpeg-turbo ppc-zlib zip ||
+          /opt/devkitpro/pacman/bin/pacman -S --noconfirm --needed \
+            libogc libfat-ogc ppc-freetype ppc-libpng ppc-brotli ppc-bzip2 \
+            ppc-libjpeg-turbo ppc-zlib zip ||
+          echo "::warning::package install failed, continuing with the image contents"
 
       - name: Build mbedTLS, libwiiupdate and libwiiosk
         run: bash tools/build_libs.sh
