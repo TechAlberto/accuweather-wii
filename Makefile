@@ -110,7 +110,12 @@ else
 $(OUTPUT).dol: $(OUTPUT).elf
 $(OUTPUT).elf: $(OFILES)
 
-$(OFILES_SOURCES) : $(HFILES)
+# bin2s writes each header as a side effect of building the matching .o, so the
+# binary objects have to be built before anything that includes those headers.
+# The headers themselves get an empty rule: on a clean tree make would otherwise
+# stop with "No rule to make target 'logo_bin.h'".
+$(OFILES_SOURCES) : $(OFILES_BIN)
+$(HFILES) : ;
 
 # Embedded binary resources: the four APK fonts and the wordmark texture.
 %.ttf.o : %.ttf
