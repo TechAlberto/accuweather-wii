@@ -1,0 +1,18 @@
+# Desktop builds: unit tests, and the full network path against GitHub.
+MB      := vendor/mbedtls
+MZ      := vendor/miniz
+MZFLAGS := -DMINIZ_NO_TIME -DMINIZ_NO_ZLIB_APIS -DMINIZ_NO_ZLIB_COMPATIBLE_NAMES
+CFLAGS  := -O1 -Wall -Itests/stub -Iinclude -Isource -Iconfig -I$(MB)/include -I$(MB)/library -I$(MZ) $(MZFLAGS) \
+           -DMBEDTLS_CONFIG_FILE=\"mbedtls_wiiupdate.h\" -Wno-unused-parameter
+LIBSRCS := source/wiiupdate.c source/wiiupdate_http.c source/wiiupdate_version.c source/wiiupdate_extract.c \
+           $(MZ)/miniz.c $(wildcard $(MB)/library/*.c)
+
+all: build/host_test build/host_check
+
+build/host_test: tests/host_test.c source/wiiupdate_version.c source/wiiupdate_extract.c $(MZ)/miniz.c
+	@mkdir -p build
+	$(CC) $(CFLAGS) -w $^ -o $@
+
+build/host_check: tests/host_check.c $(LIBSRCS)
+	@mkdir -p build
+	$(CC) $(CFLAGS) $^ -lpthread -o $@

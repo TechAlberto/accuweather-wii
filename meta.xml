@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+	<name>AccuWeather</name>
+	<coder>spenc</coder>
+	<version>1.0.0</version>
+	<release_date>20261029000000</release_date>
+	<short_description>AccuWeather forecasts, live, on your Wii</short_description>
+	<long_description>A native Wii port of the AccuWeather Android TV app.
+
+Live conditions come straight from the AccuWeather API over HTTPS:
+current conditions, the next 12 hours, a 5 day forecast and weather
+alerts, with the icons, fonts and colours of the Android TV app.
+
+Press 2 (or click SEARCH) to type a city on the Wii system keyboard
+and jump to its forecast.
+
+Controls
+  D-pad left/right   switch tabs
+  D-pad up/down      scroll the hourly strip
+  A                  refresh
+  B                  Fahrenheit / Celsius
+  2                  search for a city
+  + / -              next / previous bundled city
+  Wii Remote pointer click tabs, the SEARCH chip and the keyboard
+  HOME               return to the Wii Menu
+
+Requires an internet connection (Wi-Fi settings in the Wii Menu).
+</long_description>
+</app>

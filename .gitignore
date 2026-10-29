@@ -1,0 +1,21 @@
+# Build products
+/build/
+/dist/
+*.dol
+*.elf
+*.map
+*.o
+
+# Prebuilt third-party libraries (tools/build_libs.sh regenerates these)
+/libs/ppc/
+
+# Third-party build trees
+/libs/libwiiosk/build/
+/libs/libwiiosk/lib/
+/libs/libwiiupdate/build/
+/libs/libwiiupdate/lib/
+/libs/libwiiinput/build/
+/libs/libwiiinput/lib/
+
+# Release archives
+*.zip
